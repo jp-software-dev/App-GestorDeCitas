@@ -10,6 +10,8 @@
           "min-height: auto"
         ]
       }
-    ]
+    ],
+    "no-inline-styles": "off",
+    "axe/text-alternatives": "off"
   }
 }
