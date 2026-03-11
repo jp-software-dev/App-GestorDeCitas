@@ -70,7 +70,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['role'] === 'paciente') {
 <?php endif; ?>
 
 <section id="servicios" class="py-5 bg-white">
-    <div class="container py-4">
+    <div class="container py-5">
         <div class="text-center mb-5">
             <h2 class="fw-bold text-dark-blue display-6">¿Por qué elegirnos?</h2>
             <p class="text-secondary">Tecnología médica de vanguardia al servicio de tu bienestar</p>
@@ -101,10 +101,11 @@ if (isset($_SESSION['user_id']) && $_SESSION['role'] === 'paciente') {
     </div>
 </section>
 
-<section class="cta-section py-5" style="background-color: #f0f4f8;">
-    <div class="container text-center">
-        <h2 class="fw-bold mb-4" style="color: #cbd5e1;">¿Listo para transformar tu experiencia médica?</h2>
-        <a href="registro.php" class="btn btn-outline-primary bg-white btn-lg rounded-pill px-5 py-2 fw-bold shadow-sm">Crear cuenta gratuita</a>
+<section class="cta-section py-5 text-white" style="background: linear-gradient(135deg, #0a4275 0%, #0d6efd 100%);">
+    <div class="container text-center py-4">
+        <h2 class="fw-bold mb-3 text-white">¿Listo para transformar tu experiencia médica?</h2>
+        <p class="mb-4 lead text-white-50">Únete a nuestra plataforma y toma el control de tu agenda hoy mismo.</p>
+        <a href="registro.php" class="btn btn-light btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg text-primary">Crear cuenta gratuita</a>
     </div>
 </section>
 
