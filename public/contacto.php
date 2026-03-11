@@ -30,7 +30,7 @@ $ruta_agendar = isset($_SESSION['user_id']) ? 'agenda.php' : 'login_paciente.php
                     </div>
                     <div>
                         <h6 class="fw-bold text-dark mb-1">Ubicación</h6>
-                        <p class="text-secondary mb-0 small">Zaragoza, Calimaya, Estado de México</p>
+                        <p class="text-secondary mb-0 small">Toluca, Estado de México</p>
                     </div>
                 </div>
 
