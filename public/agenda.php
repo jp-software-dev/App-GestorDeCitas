@@ -1,22 +1,15 @@
 <?php
-// VISTA DE AGENDA: Interfaz principal de reserva donde los pacientes seleccionan fecha, hora y especialista para sus citas médicas.
-
-// GESTIÓN DE SESIÓN: Reanuda la sesión activa para validar la identidad del usuario antes de permitir el acceso al calendario.
 session_start();
 
-// DEPENDENCIAS: Carga la configuración de la base de datos para realizar las consultas de perfiles y especialistas.
 require_once '../config/Database.php';
 
-// PROTECCIÓN DE ACCESO: Si no hay un usuario autenticado, redirige inmediatamente al login de pacientes para proteger la privacidad del sistema.
 if (!isset($_SESSION['user_id'])) {
     header("Location: login_paciente.php");
     exit();
 }
 
-// CONEXIÓN DB: Obtiene la instancia única de la base de datos (Singleton).
 $db = Database::getInstance();
 
-// PERFIL DE PACIENTE: Si el usuario es un paciente, extrae sus datos de contacto para precargar el formulario de agendamiento automáticamente.
 if ($_SESSION['role'] === 'admin') {
     $paciente = ['email' => '', 'telefono' => ''];
 } else {
@@ -24,7 +17,6 @@ if ($_SESSION['role'] === 'admin') {
     $stmt->execute([$_SESSION['user_id']]);
     $paciente = $stmt->fetch();
     
-    // INTEGRIDAD DE SESIÓN: Si los datos del paciente no existen (ej. cuenta eliminada), destruye la sesión y redirige al login.
     if (!$paciente) {
         session_destroy();
         header("Location: login_paciente.php");
@@ -32,7 +24,6 @@ if ($_SESSION['role'] === 'admin') {
     }
 }
 
-// LISTADO DE ESPECIALISTAS: Recupera los doctores con estado activo (1) para poblar el menú desplegable del modal de reserva.
 $doctores_query = "SELECT id_doctor, nombre, apellido_paterno FROM doctores WHERE estado = 1 ORDER BY nombre";
 $doctores_stmt = $db->query($doctores_query);
 $doctores = $doctores_stmt->fetchAll();
@@ -43,12 +34,24 @@ $doctores = $doctores_stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda - MediAgenda</title>
+    
+    <style>
+        /* FIX: Previene que el mini-calendario se recorte */
+        .booking-sidebar {
+            min-width: 320px !important;
+            padding-right: 20px !important;
+        }
+        .mini-cal {
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+        .mini-cal-header {
+            padding: 0 10px;
+        }
+    </style>
 </head>
 <body>
-    <?php 
-    // CABECERA: Incluye el layout del header que gestiona la navegación y el estado de la sesión visualmente.
-    include '../src/views/layout/header.php'; 
-    ?>
+    <?php include '../src/views/layout/header.php'; ?>
 
     <div class="container-fluid py-4 bg-light">
         <div class="container">
@@ -121,10 +124,7 @@ $doctores = $doctores_stmt->fetchAll();
                             <label for="id_doctor" class="form-label fw-bold text-secondary">Especialista <span class="text-danger">*</span></label>
                             <select id="id_doctor" name="id_doctor" class="form-select" required>
                                 <option value="" selected disabled>Seleccione un especialista</option>
-                                <?php 
-                                // BUCLE DE DOCTORES: Genera las opciones del select basadas en los médicos activos recuperados de la base de datos.
-                                foreach ($doctores as $doc): 
-                                ?>
+                                <?php foreach ($doctores as $doc): ?>
                                     <option value="<?php echo $doc['id_doctor']; ?>">
                                         Dr. <?php echo htmlspecialchars($doc['nombre'] . ' ' . $doc['apellido_paterno']); ?>
                                     </option>
@@ -157,9 +157,6 @@ $doctores = $doctores_stmt->fetchAll();
         </div>
     </div>
 
-    <?php 
-    // PIE DE PÁGINA: Incluye el footer que contiene el cierre de etiquetas y la carga de calendar.js (el motor de esta vista).
-    include '../src/views/layout/footer.php'; 
-    ?>
+    <?php include '../src/views/layout/footer.php'; ?>
 </body>
 </html>

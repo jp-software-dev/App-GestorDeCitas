@@ -50,9 +50,14 @@ require_once '../src/views/layout/header.php';
                     </select>
                 </div>
 
-                <div class="col-12">
+                <div class="col-md-6">
                     <label for="email" class="form-label fw-bold text-secondary">Correo electrónico</label>
                     <input type="email" id="email" name="email" class="form-control bg-light border-0" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="telefono" class="form-label fw-bold text-secondary">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" class="form-control bg-light border-0" pattern="[0-9]{10}" maxlength="10" required>
+                    <small class="text-muted small" style="font-size: 0.75rem;">10 dígitos numéricos</small>
                 </div>
 
                 <div class="col-md-6">

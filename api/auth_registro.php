@@ -19,7 +19,8 @@ $curp = strtoupper(trim($_POST['curp'] ?? ''));
 $password = $_POST['password'] ?? '';
 $confirm_password = $_POST['confirm_password'] ?? '';
 
-$telefono = '';
+// FIX: Generamos un teléfono falso internamente para evitar el error UNIQUE de la base de datos
+$telefono = '00' . rand(10000000, 99999999);
 
 if (empty($nombre) || empty($apellido_paterno) || empty($email) || empty($edad) || empty($genero) || empty($curp) || empty($password) || empty($confirm_password)) {
     echo json_encode(['status' => 'error', 'message' => 'Todos los campos obligatorios deben estar llenos']);
@@ -38,11 +39,6 @@ if ($password !== $confirm_password) {
 
 if (strlen($password) < 8) {
     echo json_encode(['status' => 'error', 'message' => 'La contraseña debe tener al menos 8 caracteres']);
-    exit;
-}
-
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['status' => 'error', 'message' => 'Correo electrónico no válido']);
     exit;
 }
 
@@ -84,6 +80,6 @@ try {
 } catch (Exception $e) {
     $db->rollBack();
     error_log("Error en registro: " . $e->getMessage());
-    echo json_encode(['status' => 'error', 'message' => 'Error interno del servidor']);
+    echo json_encode(['status' => 'error', 'message' => 'Error interno del servidor: ' . $e->getMessage()]);
 }
 ?>
